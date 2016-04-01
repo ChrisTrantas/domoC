@@ -16,7 +16,7 @@ var requiresLogout = function(req, res, next){
 };
 
 var requiresSecure = function(req, res, next){
-	if(req.headers['x-forward-proto'] != 'https'){
+	if(req.headers['x-forwarded-proto'] != 'https'){
 		return res.redirect('https://' + req.hostname + req.url);
 	}
 	next();
@@ -30,8 +30,8 @@ module.exports.requiresLogin  = requiresLogin;
 module.exports.requiresLogout = requiresLogout;
 
 if(process.env.NODE_ENV === "production"){
-	module.exports.requireSecure = requireSecure;
+	module.exports.requiresSecure = requiresSecure;
 }
 else{
-	module.exports.requireSecure = bypassSecure;
+	module.exports.requiresSecure = bypassSecure;
 }
